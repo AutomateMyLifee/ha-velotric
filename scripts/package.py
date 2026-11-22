@@ -27,7 +27,9 @@ class HacsPackageBuilder:
 
     def _collect_files(self) -> list[Path]:
         files: list[Path] = []
-        integration_dir = self.source / "custom_components" / self.source.name
+        # Resolve to absolute path to get the integration name correctly
+        resolved_source = self.source.resolve()
+        integration_dir = resolved_source / "custom_components" / resolved_source.name
 
         # Core integration files
         if integration_dir.is_dir():
@@ -56,13 +58,27 @@ class HacsPackageBuilder:
                 doc_path = self.source / doc_name
                 if doc_path.is_file():
                     files.append(doc_path)
-        return sorted(files, key=lambda path: path.relative_to(self.source).as_posix())
+        # Sort: core files first (under custom_components/<domain>/), then docs at root
+        files.sort(key=lambda path: (
+            0 if path.resolve().is_relative_to(self.source.resolve() / "custom_components") else 1,
+            str(path)
+        ))
+        return files
 
-    def _archive_name(self, path: Path) -> str:
+    @staticmethod
+    def _archive_name(project_root: Path, path: Path) -> str:
         """Return the archive name for a file."""
         if path.name in {"README.md", "hacs.json", "hacs.yaml"}:
             return path.name
-        return f"custom_components/{self.source.name}/{path.relative_to(self.source).as_posix()}"
+        # Resolve both to absolute paths for comparison
+        project_root = project_root.resolve()
+        path_abs = path.resolve()
+        rel = path_abs.relative_to(project_root)
+        parts = rel.parts
+        if len(parts) >= 2 and parts[0] == "custom_components":
+            return rel.as_posix()
+        # If not under custom_components, compute relative path from project root
+        return rel.as_posix()
 
     def _add_to_archive(self, archive: ZipFile, path: Path, archive_name: str) -> None:
         info = ZipInfo(archive_name, _TIMESTAMP)
@@ -79,8 +95,9 @@ class HacsPackageBuilder:
         required = {"__init__.py", "manifest.json"}
         # Separate core files from docs
         core_files = [path for path in files if path.name not in {"README.md", "hacs.json", "hacs.yaml"}]
-        present = {path.relative_to(self.source).name for path in core_files}
-        missing = required - present
+        # Check required files exist in the integration directory
+        integration_files = {path.name for path in core_files}
+        missing = required - integration_files
         if missing:
             names = ", ".join(sorted(missing))
             raise SystemExit(f"runtime package is missing: {names}")
@@ -97,38 +114,21 @@ class HacsPackageBuilder:
         return digest
 
     @staticmethod
-    def _archive_name(project_root: Path, path: Path) -> str:
-        """Return the archive name for a file.
-
-        Core integration files go under custom_components/<integration_name>/.
-        Docs (README.md, hacs.json, hacs.yaml) go at the root of the zip.
-        """
-        if path.name in {"README.md", "hacs.json", "hacs.yaml"}:
-            return path.name
-
-        # Core files: custom_components/<integration_name>/<relative>
-        rel = path.relative_to(project_root)
-        # Integration is at custom_components/<integration_name>/
-        parts = rel.parts
-        if len(parts) >= 2 and parts[0] == "custom_components":
-            return rel.as_posix()
-        # If not under custom_components, compute relative path from project root
-        return rel.as_posix()
-
-    @staticmethod
     def verify(source: Path, archive_path: Path) -> None:
         root = source.parent
         expected = {}
+        resolved_source = source.resolve()
+        integration_dir = resolved_source / "custom_components" / resolved_source.name
 
         # Core integration files
-        integration_dir = source / "custom_components" / source.name
         if integration_dir.is_dir():
             for path in integration_dir.rglob("*"):
                 relative = path.relative_to(integration_dir)
-                if any(part in _EXCLUDED_DIRECTORIES or part.startswith(".") for part in relative.parts):
+                # Skip excluded directories
+                if any(p in HacsPackageBuilder._EXCLUDED_DIRECTORIES or p.startswith(".") for p in relative.parts):
                     continue
-                if path.is_file() and path.suffix not in _EXCLUDED_SUFFIXES:
-                    archive_name = HacsPackageBuilder._archive_name(source, path)
+                if path.is_file() and path.suffix not in HacsPackageBuilder._EXCLUDED_SUFFIXES:
+                    archive_name = HacsPackageBuilder._archive_name(resolved_source, path)
                     if archive_name is not None:
                         expected[archive_name] = path
 
