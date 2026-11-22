@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+.venv/
+.*_cache/
+.coverage
+.build/
+dist/
+*.pyc
+*.pyo
+
+# Local captures
+captures/
+*.log
+
+# HACS release artifacts
+*.zip
+*.sha256
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking
+.mypy_cache/
+.ruff_cache/
+
+# Secrets
+*secret*.txt
+*.key
+*.pem
+
+# Release builds
+releases/

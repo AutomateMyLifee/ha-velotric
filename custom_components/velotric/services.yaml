@@ -1,0 +1,38 @@
+velotric.force_update:
+  name: Force Update
+  description: Force an immediate data update from the bike
+  fields:
+    entity_id:
+      name: Entity ID
+      description: The sensor entity to update (optional, updates all if not specified)
+      required: false
+      selector:
+        entity:
+          domain: sensor
+          integration: velotric
+
+velotric.send_query:
+  name: Send Query
+  description: Send a specific query command to the bike
+  fields:
+    entity_id:
+      name: Entity ID
+      description: The sensor entity (any Velotric sensor)
+      required: true
+      selector:
+        entity:
+          domain: sensor
+          integration: velotric
+    query_type:
+      name: Query Type
+      description: The type of query to send
+      required: true
+      selector:
+        select:
+          options:
+            - battery
+            - riding
+            - battery_detail
+            - charge
+            - firmware
+          translation_key: query_type

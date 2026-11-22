@@ -1,0 +1,62 @@
+{
+  "title": "Velotric E-Bike",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Velotric E-Bike Setup",
+        "description": "Enter your bike's QR code or MAC address to connect.",
+        "data": {
+          "device_id": "QR Code or MAC Address"
+        }
+      },
+      "bluetooth_confirm": {
+        "title": "Velotric Found",
+        "description": "Found {name} ({mac}). Add this device?"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Velotric Options",
+        "description": "Configure polling interval, battery data source, voltage curves, and offline timeout.",
+        "data": {
+          "poll_interval": "Poll Interval (seconds)",
+          "battery_data_source": "Battery Data Source",
+          "curve_preset": "Voltage Curve Preset",
+          "charging_curve": "Custom Charging Curve (JSON)",
+          "idle_curve": "Custom Idle Curve (JSON)",
+          "offline_timeout": "Offline Timeout (seconds)",
+          "charge_current_a": "Charge Current (Amps)",
+          "calibrate": "Calibrate at Current SOC"
+        }
+      },
+      "calibrate": {
+        "title": "Calibrate Voltage Curve",
+        "description": "Enter the SOC shown on your bike display/app. The curves will auto-adjust to match the current cell voltage.",
+        "data": {
+          "observed_soc": "Observed SOC from Bike Display (%)",
+          "avg_cell_voltage": "Current Avg Cell Voltage (V)",
+          "is_charging": "Currently Charging"
+        }
+      }
+    },
+    "error": {
+      "invalid_json": "Enter valid JSON.",
+      "calibration_failed": "Calibration failed. Check logs for details."
+    }
+  },
+  "selector": {
+    "battery_data_source": {
+      "options": {
+        "curve": "Tempo Voltage Curve",
+        "reported": "Reported Battery Level"
+      }
+    },
+    "curve_preset": {
+      "options": {
+        "velotric_default": "Tempo Voltage Curve"
+      }
+    }
+  }
+}
