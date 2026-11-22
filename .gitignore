@@ -12,10 +12,6 @@ dist/
 captures/
 *.log
 
-# HACS release artifacts
-*.zip
-*.sha256
-
 # IDE
 .vscode/
 .idea/
