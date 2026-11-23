@@ -110,7 +110,7 @@ class VelotricBLEClient:
                 self.hass, self.mac, connectable=True
             )
             if device is None:
-                _LOGGER.error("Device %s not found in HA Bluetooth cache", self.mac)
+                _LOGGER.warning("Device %s not found in HA Bluetooth cache, will retry connection", self.mac)
                 return False
 
             # Establish connection with retry logic
@@ -167,7 +167,7 @@ class VelotricBLEClient:
     async def send_frame(self, frame_bytes: bytes, wait_for_response: float = 2.0) -> List[VelotricFrame]:
         """Send a frame and collect responses."""
         if not self._connected or not self.client or not self.client.is_connected:
-            _LOGGER.error("Not connected")
+            _LOGGER.warning("Not connected, skipping frame send")
             return []
 
         _LOGGER.debug("WRITE: %s", frame_bytes.hex())
