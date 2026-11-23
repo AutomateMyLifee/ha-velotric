@@ -21,7 +21,7 @@ Custom Home Assistant integration for Velotric e-bikes via Bluetooth LE proxy (E
 **Battery**
 - Pack voltage & average cell voltage (🟢)
 - Individual cell voltages (🟢)
-- Real battery level (🔴 — not yet reverse engineered)
+- Real battery level (🔴 not yet reverse engineered)
 - Battery level estimated from cell voltage curve (🟢)
 - Cell voltage delta (🟢 battery health)
 
@@ -29,10 +29,10 @@ Custom Home Assistant integration for Velotric e-bikes via Bluetooth LE proxy (E
 - BLE connected (🟢)
 - Charging active (🟢)
 - Charge time remaining (🟡 estimated)
-- Actual charge current (🔴 — not yet reverse engineered)
+- Actual charge current (🔴 not yet reverse engineered)
 
 **Riding**
-- Trip distance/odometer (🔴 — not yet reverse engineered)
+- Trip distance/odometer (🔴 not yet reverse engineered)
 
 **Firmware Versions**
 - Display (🟢)
