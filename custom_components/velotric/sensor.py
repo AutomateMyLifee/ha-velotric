@@ -403,7 +403,8 @@ class VelotricChargingBinarySensor(CoordinatorEntity, BinarySensorEntity):
         data = self.coordinator.data
         if data is None:
             return False
-        return _safe_get(data, "is_charging", False)
+        # Only report charging when the bike is online (charge status only valid if online)
+        return _safe_get(data, "is_charging", False) and self.coordinator.is_online
 
     @property
     def extra_state_attributes(self) -> Dict[str, Any]:
