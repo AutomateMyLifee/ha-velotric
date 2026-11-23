@@ -2,7 +2,7 @@
 
 Custom Home Assistant integration for Velotric e-bikes via Bluetooth LE proxy (ESPHome BLE proxy).
 
-**Beta status:** Fully reverse-engineered from BLE packet captures, but only tested on one Velotric Tempo unit.
+**Beta status:** Fully reverse-engineered from BLE packet captures, but only tested on one Velotric Tempo unit. Heavy use of coding agent.
 
 ---
 
@@ -16,46 +16,37 @@ Custom Home Assistant integration for Velotric e-bikes via Bluetooth LE proxy (E
 
 ---
 
-## Working Features
+## Features
 
 **Battery**
-- Pack voltage & average cell voltage
-- 10 individual cell voltages
+- Pack voltage & average cell voltage (🟢)
+- Individual cell voltages (🟢)
+- Real battery level (🔴 — not yet reverse engineered)
 - Battery level estimated from cell voltage curve (🟢)
-- Battery level reported by bike protocol (🟡 — values not accurate, still testing)
-- Charge current (raw, needs calibration)
-- Cell voltage delta (highest − lowest cell)
+- Cell voltage delta (🟢 battery health)
 
-**Riding**
-- Trip distance (trip meter, resets per ride) (🟡 — not yet reverse engineered)
-
-**Firmware (all ✅ working)**
-- Display
-- Motor Controller
-- Battery (BMS)
-- Bluetooth
-- UI Display
-- Firmware Manager
-
-**Charge Status**
+**Status**
+- BLE connected (🟢)
 - Cable connected (🟢)
 - Charging active (🟢)
-- Actual charge current (raw, needs calibration)
+- Charge time remaining (🟡 estimated)
+- Actual charge current (🔴 — not yet reverse engineered)
+
+**Riding**
+- Trip distance/odometer (🔴 — not yet reverse engineered)
+
+**Firmware Versions**
+- Display (🟢)
+- Motor Controller (🟢)
+- Battery (🟢)
+- Bluetooth (🟢)
+- UI Display (🟢)
+- Firmware Manager (🟢)
 
 **Voltage Curve Calibration**
 - Preset curve for Velotric Tempo (🟢)
-- Custom JSON curve editor
-- Calibrate at current SOC button
-
----
-
-## Known Limitations
-
-- **Total odometer**: Not implemented — unable to reverse engineer at time of writing
-- **Charge time remaining**: Not transmitted by bike; calculate in HA: `(remaining_mAh / charge_current_mA) * 60`
-- **Battery level reported by bike**: Current values not accurate — use voltage-estimated SOC instead
-- **Trip distance**: Trip meter not yet reverse engineered
-- **Cell voltage values**: Verify cell voltage readings with `/DEBUG` before relying on them
+- Custom JSON curve editor (🟡 buggy behavior)
+- Calibrate at current SOC button (🟡 buggy behavior)
 
 ---
 
