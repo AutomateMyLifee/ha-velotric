@@ -281,8 +281,8 @@ def parse_battery_response(frame: VelotricFrame) -> Dict[str, Any]:
                 for i in range(10):
                     offset = 13 + i * 2
                     if offset + 1 < len(data):
-                        # BOLD: little-endian, not big-endian (BLUETOOTH BLE payload is LSB first)
-                        mv = (data[offset + 1] << 8) | data[offset]
+                        # BIG-endian: high byte first; data is big-endian (confirmed from capture)
+                        mv = (data[offset] << 8) | data[offset + 1]
                         cell_mv.append(mv)
                 result['cell_voltages_mv'] = cell_mv
                 result['cell_voltages'] = [mv / 1000.0 for mv in cell_mv]
@@ -291,7 +291,8 @@ def parse_battery_response(frame: VelotricFrame) -> Dict[str, Any]:
                 result['avg_cell_voltage'] = avg_cell_v
 
                 # Validate readings: skip 0V, high/low outliers, and implausible avg/pack
-                valid_cells = [v for v in cell_mv if 150.0 <= v <= 5500.0]
+                # Cell voltage must be > 2V and < 5V; pack must be > 20V and < 50V
+                valid_cells = [v for v in cell_mv if 2000.0 <= v <= 5000.0]
                 if len(valid_cells) >= 10:
                     valid_avg_mv = sum(valid_cells) / 10.0
                     valid_pack_mv = sum(valid_cells)
