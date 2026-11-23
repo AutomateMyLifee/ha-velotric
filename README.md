@@ -76,7 +76,6 @@ Custom Home Assistant integration for Velotric e-bikes via Bluetooth LE proxy (E
 
 - Bike must be **on/charging** to connect
 - Only 1 BLE connection at a time (phone app blocks HA)
-- Increase poll interval if bike goes to sleep quickly
 
 ## Configuration Options
 
