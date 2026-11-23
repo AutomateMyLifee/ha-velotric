@@ -142,14 +142,11 @@ class VelotricBatterySensor(CoordinatorEntity, SensorEntity):
             # Use reported battery level from bike
             return _safe_get(self.coordinator.data, "battery_reported", 0)
         else:
-            # Use estimated from voltage curve (default) - only when reading is valid
-            if self.coordinator.data.get("valid_battery_reading"):
-                return self.coordinator._estimate_soc(
-                    _safe_get(self.coordinator.data, "avg_cell_voltage", 0),
-                    _safe_get(self.coordinator.data, "is_charging", False)
-                )
-            # Invalid reading: fall back to reported SOC
-            return _safe_get(self.coordinator.data, "battery_reported", 0)
+            # Use estimated from voltage curve (default)
+            return self.coordinator._estimate_soc(
+                _safe_get(self.coordinator.data, "avg_cell_voltage", 0),
+                _safe_get(self.coordinator.data, "is_charging", False)
+            )
 
     @property
     def icon(self) -> str:
