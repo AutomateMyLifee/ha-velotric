@@ -392,14 +392,14 @@ class VelotricCoordinator(DataUpdateCoordinator):
         cable_connected = charge.get('cable_connected', False)
         charge_current_raw = charge.get('charge_current_actual_raw', 0)
         
-        # SOC estimation using configured curves - only when reading is valid
+        # SOC estimation using configured curves - always use voltage curve when cell voltage is available
+        # (filtering is done on the cell/pack voltage side, so no need to filter on SOC sensor)
         avg_cell_v = battery.get('avg_cell_voltage', 0)
         soc_estimated = 0
-        if battery.get('valid_battery_reading') and avg_cell_v > 0:
+        if avg_cell_v > 0:
             avg_cell_v_scaled = round(avg_cell_v * self.voltage_scaling, 3)
             soc_estimated = self._estimate_soc(avg_cell_v, is_charging)
         else:
-            avg_cell_v_scaled = round(avg_cell_v * self.voltage_scaling, 3) if avg_cell_v > 0 else 0
             # Fallback: use reported SOC if available
             soc_estimated = battery.get('soc_percent_reported', 0)
         
