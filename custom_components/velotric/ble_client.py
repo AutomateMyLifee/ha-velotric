@@ -148,7 +148,7 @@ class VelotricBLEClient:
             return True
 
         except Exception as e:
-            _LOGGER.error("Connection failed: %s", e)
+            _LOGGER.warning("Connection failed: %s", e)
             await self.disconnect()
             return False
 
