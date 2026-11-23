@@ -27,7 +27,6 @@ Custom Home Assistant integration for Velotric e-bikes via Bluetooth LE proxy (E
 
 **Status**
 - BLE connected (🟢)
-- Cable connected (🟢)
 - Charging active (🟢)
 - Charge time remaining (🟡 estimated)
 - Actual charge current (🔴 — not yet reverse engineered)
