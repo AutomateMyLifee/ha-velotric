@@ -6,28 +6,18 @@ Custom Home Assistant integration for Velotric e-bikes via Bluetooth LE proxy (E
 
 ---
 
-## Status Legend
-
-| Tag | Meaning |
-|-----|---------|
-| 🟢 | Working reliably |
-| 🟡 | Working, needs testing/calibration |
-| 🔴 | Not working / not yet implemented |
-
----
-
 ## Features
 
 **Battery**
-- Pack voltage & average cell voltage (🟢)
-- Individual cell voltages (🟢)
+- Pack voltage & average cell voltage
+- Individual cell voltages
 - Real battery level (🔴 — not yet reverse engineered)
-- Battery level estimated from cell voltage curve (🟢)
-- Cell voltage delta (🟢 battery health)
+- Battery level estimated from cell voltage curve
+- Cell voltage delta (battery health)
 
 **Status**
-- BLE connected (🟢)
-- Charging active (🟢)
+- BLE connected
+- Charging active
 - Charge time remaining (🟡 estimated)
 - Actual charge current (🔴 — not yet reverse engineered)
 
@@ -35,15 +25,15 @@ Custom Home Assistant integration for Velotric e-bikes via Bluetooth LE proxy (E
 - Trip distance/odometer (🔴 — not yet reverse engineered)
 
 **Firmware Versions**
-- Display (🟢)
-- Motor Controller (🟢)
-- Battery (🟢)
-- Bluetooth (🟢)
-- UI Display (🟢)
-- Firmware Manager (🟢)
+- Display
+- Motor Controller
+- Battery
+- Bluetooth
+- UI Display
+- Firmware Manager
 
 **Voltage Curve Calibration**
-- Preset curve for Velotric Tempo (🟢)
+- Preset curve for Velotric Tempo
 - Custom JSON curve editor (🟡 buggy behavior)
 - Calibrate at current SOC button (🟡 buggy behavior)
 
@@ -69,7 +59,7 @@ Custom Home Assistant integration for Velotric e-bikes via Bluetooth LE proxy (E
 ### Via UI
 
 1. Settings → Devices & Services → Add Integration → "Velotric"
-2. Enter your bike's **QR code** (from bike display) or **MAC address**
+2. Enter your bike's **QR code** (from bike display) or **BLE MAC address**
 3. QR code format: `SERIAL##MAC##KEY`
 
 ### Notes
